@@ -1,0 +1,56 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.0.0
+      - name: Set up JDK
+        uses: actions/setup-java@v3.0.0
+        with:
+          distribution: adopt
+          java-version: 11
+      - name: Build LimboHub
+        run: ./gradlew build
+      - name: Upload LimboHub
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: LimboHub
+          path: "build/libs/limbohub*.jar"
+      - uses: dev-drprasad/delete-tag-and-release@v0.2.1
+        if: ${{ github.event_name == 'push' }}
+        continue-on-error: true
+        with:
+          delete_release: true
+          tag_name: dev-build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Find git version
+        id: git-version
+        run: echo "id=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Find correct JAR
+        if: ${{ github.event_name == 'push' }}
+        id: find-jar
+        run: |
+          output="$(find build/libs/ ! -name "*-javadoc.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
+          echo "::set-output name=jarname::$output"
+      - name: Release the build
+        if: ${{ github.event_name == 'push' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: build/libs/${{ steps.find-jar.outputs.jarname }}
+          body: ${{ join(github.event.commits.*.message, '\n') }}
+          prerelease: true
+          name: Dev-build ${{ steps.git-version.outputs.id }}
+          tag: dev-build
