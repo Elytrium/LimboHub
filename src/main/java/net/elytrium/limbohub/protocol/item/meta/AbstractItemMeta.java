@@ -38,13 +38,50 @@ public abstract class AbstractItemMeta implements ItemMeta {
   private final boolean hasColor;
   private final int color;
   private final boolean enchanted;
-  private final String skullOwner;
+
+  private final String skinName = "npc" + ThreadLocalRandom.current().nextInt();
+  private final int[] skinId;
+  private final String skinValue;
+
 
   public AbstractItemMeta(boolean hasColor, int color, boolean enchanted, String skullOwner) {
     this.hasColor = hasColor;
     this.color = color;
-    this.enchanted = enchanted;
-    this.skullOwner = skullOwner;
+
+    if (skullOwner == null || skullOwner.isBlank()) {
+      this.enchanted = enchanted;
+      this.skinId = null;
+      this.skinValue = null;
+      return;
+    } else {
+      this.enchanted = false;
+    }
+
+    String uuidString;
+    if (skullOwner.contains(";")) {
+      String[] data = skullOwner.split(";", 2);
+      uuidString = data[0];
+      this.skinValue = data[1];
+    } else {
+      uuidString = "00000000-0000-0000-0000-000000000000";
+      this.skinValue = skullOwner;
+    }
+
+    if (uuidString.contains(",")) {
+      this.skinId = Stream.of(uuidString.split(",")).mapToInt(Integer::parseInt).toArray();
+      if (this.skinId.length != 4) {
+        throw new IllegalArgumentException("Invalid id array length");
+      }
+    } else {
+      this.skinId = new int[4];
+
+      UUID uuid = UUID.fromString(uuidString);
+      ByteBuffer buffer = ByteBuffer.allocateDirect(16);
+      buffer.putLong(uuid.getMostSignificantBits());
+      buffer.putLong(uuid.getLeastSignificantBits());
+      buffer.flip();
+      buffer.asIntBuffer().get(this.skinId);
+    }
   }
 
   @Override
@@ -106,36 +143,17 @@ public abstract class AbstractItemMeta implements ItemMeta {
       }
     }
 
-    if (this.skullOwner != null && !this.skullOwner.isBlank()) {
-      String[] data = this.skullOwner.split(";", 2);
-
-      int[] id;
-      if (this.skullOwner.contains(",")) {
-        id = Stream.of(this.skullOwner.split(",")).mapToInt(Integer::parseInt).toArray();
-        if (id.length != 4) {
-          throw new IllegalArgumentException("Invalid id array length");
-        }
-      } else {
-        id = new int[4];
-
-        UUID uuid = UUID.fromString(data[0]);
-        ByteBuffer buffer = ByteBuffer.allocateDirect(16);
-        buffer.putLong(uuid.getMostSignificantBits());
-        buffer.putLong(uuid.getLeastSignificantBits());
-        buffer.flip();
-        buffer.asIntBuffer().get(id);
-      }
-
+    if (this.skinValue != null) {
       builder.put("SkullOwner",
           CompoundBinaryTag.builder()
-              .putIntArray("Id", id)
-              .putString("Name", "npc" + ThreadLocalRandom.current().nextInt())
+              .putIntArray("Id", this.skinId)
+              .putString("Name", this.skinName)
               .put("Properties",
                   CompoundBinaryTag.builder()
                       .put("textures",
                           ListBinaryTag.builder(BinaryTagTypes.COMPOUND)
                               .add(CompoundBinaryTag.builder()
-                                  .putString("Value", data[1])
+                                  .putString("Value", this.skinValue)
                                   .build())
                               .build())
                       .build())
@@ -158,7 +176,19 @@ public abstract class AbstractItemMeta implements ItemMeta {
     return this.enchanted;
   }
 
-  public String getSkullOwner() {
-    return this.skullOwner;
+  public boolean isHasColor() {
+    return this.hasColor;
+  }
+
+  public String getSkinName() {
+    return this.skinName;
+  }
+
+  public int[] getSkinId() {
+    return this.skinId;
+  }
+
+  public String getSkinValue() {
+    return this.skinValue;
   }
 }

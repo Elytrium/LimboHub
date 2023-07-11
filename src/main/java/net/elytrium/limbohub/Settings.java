@@ -235,8 +235,8 @@ public class Settings extends YamlConfig {
         public int COLOR = 0;
         public boolean ENCHANTED = false;
         @Comment({
-            "Player skin in \"uuid;value\" format",
-            "You can get these values at https://mineskin.org/."
+            "Player skin in \"uuid;value\" or \"value\" format",
+            "You can get these values at https://mineskin.org/ or https://minecraft-heads.com/."
         })
         public String SKULL_OWNER = "";
         public String CUSTOM_NAME = "";
