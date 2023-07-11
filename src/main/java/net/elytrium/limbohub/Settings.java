@@ -337,6 +337,33 @@ public class Settings extends YamlConfig {
       public ACTION ACTION;
     }
 
+    public List<HOLOGRAM> HOLOGRAMS = List.of(
+        Settings.createNodeSequence(HOLOGRAM.class, 5.0, 1.0, 5.0, List.of("&fThis", "&7is a", "&8hologram."))
+    );
+
+    public static class HOLOGRAM {
+
+      public double X = 0;
+      public double Y = 0;
+      public double Z = 0;
+      public List<String> LINES = List.of();
+    }
+
+    public List<PORTAL> PORTALS = List.of(
+        Settings.createNodeSequence(PORTAL.class, 10, 0, 10, 20, 1, 20, Settings.createNodeSequence(ACTION.class, ACTION.Type.CONNECT_TO_SERVER, "server1"))
+    );
+
+    public static class PORTAL {
+      public int START_X = 0;
+      public int START_Y = 0;
+      public int START_Z = 0;
+      public int END_X = 0;
+      public int END_Y = 0;
+      public int END_Z = 0;
+      @Create
+      public ACTION ACTION;
+    }
+
     public static class ACTION {
       public enum Type {
         DO_NOTHING,
@@ -361,18 +388,6 @@ public class Settings extends YamlConfig {
           "TELEPORT_PLAYER: Coordinates in \"x y z yaw pitch\" format."
       })
       public String DATA = "";
-    }
-
-    public List<HOLOGRAM> HOLOGRAMS = List.of(
-        Settings.createNodeSequence(HOLOGRAM.class, 5.0, 1.0, 5.0, List.of("&fThis", "&7is a", "&8hologram."))
-    );
-
-    public static class HOLOGRAM {
-
-      public double X = 0;
-      public double Y = 0;
-      public double Z = 0;
-      public List<String> LINES = List.of();
     }
   }
 }

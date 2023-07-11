@@ -130,11 +130,33 @@ public class HubSessionHandler implements LimboSessionHandler {
     }
   }
 
+  private void teleportToSpawn() {
+    net.elytrium.limbohub.Settings.MAIN.PLAYER_COORDS coords = Settings.IMP.MAIN.PLAYER_COORDS;
+    this.player.teleport(coords.X, coords.Y, coords.Z, (float) coords.YAW, (float) coords.PITCH);
+  }
+
   @Override
   public void onMove(double posX, double posY, double posZ) {
     if (Settings.IMP.MAIN.ENABLE_Y_LIMIT && posY < Settings.IMP.MAIN.Y_LIMIT) {
-      net.elytrium.limbohub.Settings.MAIN.PLAYER_COORDS coords = Settings.IMP.MAIN.PLAYER_COORDS;
-      this.player.teleport(coords.X, coords.Y, coords.Z, (float) coords.YAW, (float) coords.PITCH);
+      this.teleportToSpawn();
+    } else {
+      for (Settings.MAIN.PORTAL portal : Settings.IMP.MAIN.PORTALS) {
+        if (posX >= portal.START_X && posY >= portal.START_Y && posZ >= portal.START_Z
+            && posX <= portal.END_X && posY <= portal.END_Y && posZ <= portal.END_Z) {
+          this.handleAction(portal.ACTION);
+          switch (portal.ACTION.TYPE) {
+            case DO_NOTHING:
+            case OPEN_MENU:
+            case SEND_MESSAGE:
+            case CLOSE_MENU:
+              this.teleportToSpawn();
+              break;
+
+            default:
+              break;
+          }
+        }
+      }
     }
   }
 
