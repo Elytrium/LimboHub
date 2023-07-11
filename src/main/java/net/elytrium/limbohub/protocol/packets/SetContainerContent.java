@@ -22,6 +22,7 @@ import com.velocitypowered.proxy.connection.MinecraftSessionHandler;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
 import io.netty.buffer.ByteBuf;
+import java.util.Objects;
 import net.elytrium.limbohub.protocol.container.Container;
 import net.elytrium.limbohub.protocol.item.ItemStack;
 
@@ -55,7 +56,8 @@ public class SetContainerContent implements MinecraftPacket {
         buf.writeShort(this.container.getContents().length);
       }
       for (ItemStack item : this.container.getContents()) {
-        item.encode(buf, protocolVersion);
+        Objects.requireNonNullElse(item, ItemStack.EMPTY)
+            .encode(buf, protocolVersion);
       }
     } else {
       int slots = 45;

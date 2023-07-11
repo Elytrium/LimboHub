@@ -176,10 +176,10 @@ public class Settings extends YamlConfig {
             "menu",
             "Menu",
             List.of(
-                Settings.createNodeSequence(MENU.ITEM_DATA.class, ".", "minecraft:black_stained_glass_pane", List.of("minecraft:glass_pane"), 1, false, 0, false, "", "", List.of()),
-                Settings.createNodeSequence(MENU.ITEM_DATA.class, "1", "minecraft:leather_helmet", List.of(), 1, true, 12544467, false, "", "&fOpen another menu", List.of()),
-                Settings.createNodeSequence(MENU.ITEM_DATA.class, "2", "minecraft:stone", List.of(), 2, false, 0, true, "", "&fServer1", List.of("&r&7This is a server.")),
-                Settings.createNodeSequence(MENU.ITEM_DATA.class, "3", "minecraft:player_head", List.of("minecraft:experience_bottle"), 1, false, 0, false, "f051234a-8c3d-45d5-8e78-df729dd0da8c;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjcwNWZkOTRhMGM0MzE5MjdmYjRlNjM5YjBmY2ZiNDk3MTdlNDEyMjg1YTAyYjQzOWUwMTEyZGEyMmIyZTJlYyJ9fX0=", "&fWhat is this?", List.of())
+                Settings.createNodeSequence(MENU.ITEM_DATA.class, ".", "minecraft:black_stained_glass_pane", List.of("minecraft:white_stained_glass_pane"), 1, 15, false, 0, false, "", "", List.of()),
+                Settings.createNodeSequence(MENU.ITEM_DATA.class, "1", "minecraft:leather_helmet", List.of(), 1, 0, true, 12544467, false, "", "&fOpen another menu", List.of()),
+                Settings.createNodeSequence(MENU.ITEM_DATA.class, "2", "minecraft:stone", List.of(), 2, 0, false, 0, true, "", "&fServer1", List.of("&r&7This is a server.")),
+                Settings.createNodeSequence(MENU.ITEM_DATA.class, "3", "minecraft:player_head", List.of("minecraft:experience_bottle"), 1, 0, false, 0, false, "f051234a-8c3d-45d5-8e78-df729dd0da8c;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjcwNWZkOTRhMGM0MzE5MjdmYjRlNjM5YjBmY2ZiNDk3MTdlNDEyMjg1YTAyYjQzOWUwMTEyZGEyMmIyZTJlYyJ9fX0=", "&fWhat is this?", List.of())
             ),
             List.of(
                 ".........",
@@ -196,9 +196,9 @@ public class Settings extends YamlConfig {
             "menu2",
             "Another Menu",
             List.of(
-                Settings.createNodeSequence(MENU.ITEM_DATA.class, ".", "minecraft:black_stained_glass_pane", List.of("minecraft:glass_pane"), 1, false, 0, false, "", "", List.of()),
-                Settings.createNodeSequence(MENU.ITEM_DATA.class, "1", "minecraft:barrier", List.of(), 1, false, 0, false, "", "&fClose menu", List.of()),
-                Settings.createNodeSequence(MENU.ITEM_DATA.class, "2", "minecraft:bedrock", List.of(), 1, false, 0, false, "", "&fGo back", List.of())
+                Settings.createNodeSequence(MENU.ITEM_DATA.class, ".", "minecraft:black_stained_glass_pane", List.of("minecraft:white_stained_glass_pane"), 1, 15, false, 0, false, "", "", List.of()),
+                Settings.createNodeSequence(MENU.ITEM_DATA.class, "1", "minecraft:barrier", List.of(), 1, 0, false, 0, false, "", "&fClose menu", List.of()),
+                Settings.createNodeSequence(MENU.ITEM_DATA.class, "2", "minecraft:bedrock", List.of(), 1, 0, false, 0, false, "", "&fGo back", List.of())
             ),
             List.of(
                 ".........",
@@ -230,6 +230,8 @@ public class Settings extends YamlConfig {
         public String ITEM = "";
         public List<String> FALLBACK_ITEMS = List.of();
         public int COUNT = 1;
+        @Comment("Only used on legacy versions (1.12.2 and lower).")
+        public int DATA = 0;
         public boolean HAS_COLOR = false;
         @Comment("You can get color value at https://notwoods.github.io/minecraft-tools/armorcolor/.")
         public int COLOR = 0;

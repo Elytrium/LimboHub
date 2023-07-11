@@ -68,7 +68,8 @@ public class ItemStack {
     if (this.present) {
       VirtualItem item = this.items.stream()
           .dropWhile(i -> !i.isSupportedOn(protocolVersion))
-          .findFirst().orElseThrow();
+          .findFirst().orElseThrow(() ->
+              new IllegalArgumentException("Item " + this.items.get(0).getModernID() + " is not supported on " + protocolVersion));
 
       if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_13_2) < 0) {
         buf.writeShort(item.getID(protocolVersion));

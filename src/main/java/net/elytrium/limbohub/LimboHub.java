@@ -248,7 +248,7 @@ public class LimboHub {
                         .map(line -> buildResetComponent().append(getSerializer().deserialize(line)))
                         .collect(Collectors.toList());
 
-                return new ItemStack(virtualItem, fallbackItems, item.COUNT, 0, new StaticItemMeta(
+                return new ItemStack(virtualItem, fallbackItems, item.COUNT, item.DATA, new StaticItemMeta(
                     nameComponent, loreComponents, item.HAS_COLOR, item.COLOR, item.ENCHANTED, item.SKULL_OWNER));
               }
           ));
@@ -272,6 +272,10 @@ public class LimboHub {
         for (int column = 0; column < columns; column++) {
           String itemId = format.substring(column, column + 1);
           ItemStack item = " ".equals(itemId) ? ItemStack.EMPTY : items.get(itemId);
+          if (item == null) {
+            throw new IllegalArgumentException("Item with id '" + itemId + "' is not defined.");
+          }
+
           container.setItem(column, row, item);
         }
       }
