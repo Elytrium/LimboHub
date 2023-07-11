@@ -30,6 +30,7 @@ public class Settings extends YamlConfig {
   @Ignore
   public static final Settings IMP = new Settings();
 
+  @Final
   public String VERSION = BuildConstants.VERSION;
 
   @Comment({
