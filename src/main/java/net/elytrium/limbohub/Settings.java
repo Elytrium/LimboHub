@@ -341,10 +341,11 @@ public class Settings extends YamlConfig {
         SEND_MESSAGE,
         OPEN_MENU,
         CONNECT_TO_SERVER,
-        KICK_PLAYER
+        KICK_PLAYER,
+        TELEPORT_PLAYER
       }
 
-      @Comment("Available values: DO_NOTHING, CLOSE_MENU, SEND_MESSAGE, OPEN_MENU, CONNECT_TO_SERVER, KICK_PLAYER")
+      @Comment("Available values: DO_NOTHING, CLOSE_MENU, SEND_MESSAGE, OPEN_MENU, CONNECT_TO_SERVER, KICK_PLAYER, TELEPORT_PLAYER")
       public Type TYPE = Type.DO_NOTHING;
       @Comment({
           "Depends on action type:",
@@ -353,7 +354,8 @@ public class Settings extends YamlConfig {
           "SEND_MESSAGE: Message to send, lines should be separated with {NL}.",
           "OPEN_MENU: Menu ID",
           "CONNECT_TO_SERVER: Server name (as in velocity.toml).",
-          "KICK_PLAYER: Kick reason"
+          "KICK_PLAYER: Kick reason",
+          "TELEPORT_PLAYER: Coordinates in \"x y z yaw pitch\" format."
       })
       public String DATA = "";
     }

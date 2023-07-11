@@ -237,6 +237,14 @@ public class HubSessionHandler implements LimboSessionHandler {
         this.proxyPlayer.disconnect(LimboHub.getSerializer().deserialize(action.DATA));
         break;
 
+      case TELEPORT_PLAYER:
+        String[] data = action.DATA.split(" ");
+        this.player.teleport(
+            Double.parseDouble(data[0]), Double.parseDouble(data[1]), Double.parseDouble(data[2]),
+            Float.parseFloat(data[3]), Float.parseFloat(data[4])
+        );
+        break;
+
       default:
         throw new IllegalStateException();
     }
