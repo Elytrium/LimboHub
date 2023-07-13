@@ -19,11 +19,8 @@ package net.elytrium.limbohub.protocol.item.meta;
 
 import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
-import java.nio.ByteBuffer;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Stream;
 import net.kyori.adventure.nbt.BinaryTagTypes;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.kyori.adventure.nbt.ListBinaryTag;
@@ -40,47 +37,27 @@ public abstract class AbstractItemMeta implements ItemMeta {
   private final boolean enchanted;
 
   private final String skinName = "npc" + ThreadLocalRandom.current().nextInt();
-  private final int[] skinId;
   private final String skinValue;
 
 
   public AbstractItemMeta(boolean hasColor, int color, boolean enchanted, String skullOwner) {
-    this.hasColor = hasColor;
     this.color = color;
 
     if (skullOwner == null || skullOwner.isBlank()) {
       this.enchanted = enchanted;
-      this.skinId = null;
+      this.hasColor = hasColor;
       this.skinValue = null;
       return;
     } else {
       this.enchanted = false;
+      this.hasColor = false;
     }
 
-    String uuidString;
     if (skullOwner.contains(";")) {
       String[] data = skullOwner.split(";", 2);
-      uuidString = data[0];
       this.skinValue = data[1];
     } else {
-      uuidString = "00000000-0000-0000-0000-000000000000";
       this.skinValue = skullOwner;
-    }
-
-    if (uuidString.contains(",")) {
-      this.skinId = Stream.of(uuidString.split(",")).mapToInt(Integer::parseInt).toArray();
-      if (this.skinId.length != 4) {
-        throw new IllegalArgumentException("Invalid id array length");
-      }
-    } else {
-      this.skinId = new int[4];
-
-      UUID uuid = UUID.fromString(uuidString);
-      ByteBuffer buffer = ByteBuffer.allocateDirect(16);
-      buffer.putLong(uuid.getMostSignificantBits());
-      buffer.putLong(uuid.getLeastSignificantBits());
-      buffer.flip();
-      buffer.asIntBuffer().get(this.skinId);
     }
   }
 
@@ -146,7 +123,6 @@ public abstract class AbstractItemMeta implements ItemMeta {
     if (this.skinValue != null) {
       builder.put("SkullOwner",
           CompoundBinaryTag.builder()
-              .putIntArray("Id", this.skinId)
               .putString("Name", this.skinName)
               .put("Properties",
                   CompoundBinaryTag.builder()
@@ -182,10 +158,6 @@ public abstract class AbstractItemMeta implements ItemMeta {
 
   public String getSkinName() {
     return this.skinName;
-  }
-
-  public int[] getSkinId() {
-    return this.skinId;
   }
 
   public String getSkinValue() {

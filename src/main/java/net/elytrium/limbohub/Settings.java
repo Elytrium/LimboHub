@@ -180,7 +180,7 @@ public class Settings extends YamlConfig {
                 Settings.createNodeSequence(MENU.ITEM_DATA.class, ".", "minecraft:black_stained_glass_pane", List.of("minecraft:white_stained_glass_pane"), 1, 15, false, 0, false, "", "", List.of()),
                 Settings.createNodeSequence(MENU.ITEM_DATA.class, "1", "minecraft:leather_helmet", List.of(), 1, 0, true, 12544467, false, "", "&fOpen another menu", List.of()),
                 Settings.createNodeSequence(MENU.ITEM_DATA.class, "2", "minecraft:stone", List.of(), 2, 0, false, 0, true, "", "&fServer1", List.of("&r&7This is a server.")),
-                Settings.createNodeSequence(MENU.ITEM_DATA.class, "3", "minecraft:player_head", List.of("minecraft:experience_bottle"), 1, 0, false, 0, false, "f051234a-8c3d-45d5-8e78-df729dd0da8c;eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjcwNWZkOTRhMGM0MzE5MjdmYjRlNjM5YjBmY2ZiNDk3MTdlNDEyMjg1YTAyYjQzOWUwMTEyZGEyMmIyZTJlYyJ9fX0=", "&fWhat is this?", List.of())
+                Settings.createNodeSequence(MENU.ITEM_DATA.class, "3", "minecraft:player_head", List.of("minecraft:experience_bottle"), 1, 0, false, 0, false, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjcwNWZkOTRhMGM0MzE5MjdmYjRlNjM5YjBmY2ZiNDk3MTdlNDEyMjg1YTAyYjQzOWUwMTEyZGEyMmIyZTJlYyJ9fX0=", "&fWhat is this?", List.of())
             ),
             List.of(
                 ".........",
@@ -238,8 +238,8 @@ public class Settings extends YamlConfig {
         public int COLOR = 0;
         public boolean ENCHANTED = false;
         @Comment({
-            "Player skin in \"uuid;value\" or \"value\" format",
-            "You can get these values at https://mineskin.org/ or https://minecraft-heads.com/."
+            "Player skin value.",
+            "You can get this value at https://mineskin.org/ or https://minecraft-heads.com/."
         })
         public String SKULL_OWNER = "";
         public String CUSTOM_NAME = "";

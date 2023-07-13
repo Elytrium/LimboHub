@@ -251,7 +251,8 @@ public class HubSessionHandler implements LimboSessionHandler {
         break;
 
       case CONNECT_TO_SERVER:
-        RegisteredServer server = this.plugin.getServer().getServer(action.DATA).orElseThrow();
+        RegisteredServer server = this.plugin.getServer().getServer(action.DATA).orElseThrow(
+            () -> new IllegalArgumentException("No such server with name " + action.DATA));
         this.player.disconnect(server);
         break;
 
