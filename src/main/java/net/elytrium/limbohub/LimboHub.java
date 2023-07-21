@@ -344,6 +344,7 @@ public class LimboHub {
         .setName("LimboHub")
         .setWorldTime(Settings.IMP.MAIN.WORLD_TICKS)
         .setGameMode(Settings.IMP.MAIN.GAME_MODE)
+        .setMaxSuppressPacketLength(Settings.IMP.MAIN.MAX_SUPPRESS_PACKET_LENGTH)
         .registerPacket(PacketDirection.CLIENTBOUND, SpawnEntity.class, SpawnEntity::new, new PacketMapping[]{
             new PacketMapping(0x0E, ProtocolVersion.MINECRAFT_1_8, true),
             new PacketMapping(0x00, ProtocolVersion.MINECRAFT_1_9, true),

@@ -74,6 +74,8 @@ public class Settings extends YamlConfig {
     )
     public Dimension DIMENSION = Dimension.OVERWORLD;
 
+    public int MAX_SUPPRESS_PACKET_LENGTH = 65536;
+
     @Create
     public HUB_COMMAND HUB_COMMAND;
 
