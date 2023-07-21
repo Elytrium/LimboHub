@@ -129,6 +129,7 @@ public class Settings extends YamlConfig {
     })
     public String DEFAULT_MENU = "";
 
+    @NewLine
     @Comment("List of boss bars that will be set for the player in the specified order. Set to empty list (bossbars: []) to disable.")
     public List<BOSSBAR> BOSSBARS = List.of(
         Settings.createNodeSequence(BOSSBAR.class, false, "BossBar 1", 1.0, BossBar.Color.PINK, BossBar.Overlay.PROGRESS, 5000),
@@ -149,6 +150,7 @@ public class Settings extends YamlConfig {
       public long STAY_TIME_MILLIS = -1;
     }
 
+    @NewLine
     @Create
     public SIDEBAR SIDEBAR;
 
@@ -159,6 +161,7 @@ public class Settings extends YamlConfig {
       public List<String> LINES = List.of("&7Configure me in config.yml.");
     }
 
+    @NewLine
     @Comment("Commands that will be available in the hub.")
     public List<COMMAND> COMMANDS = List.of(
         Settings.createNodeSequence(COMMAND.class, "menu", List.of("servers"), Settings.createNodeSequence(ACTION.class, ACTION.Type.OPEN_MENU, "menu")),
@@ -174,6 +177,7 @@ public class Settings extends YamlConfig {
       public ACTION ACTION;
     }
 
+    @NewLine
     public List<MENU> MENUS = List.of(
         Settings.createNodeSequence(MENU.class,
             "menu",
@@ -292,12 +296,14 @@ public class Settings extends YamlConfig {
       }
     }
 
+    @NewLine
     public List<NPC> NPCS = List.of(
         Settings.createNodeSequence(NPC.class,
             "&7Click to open menu",
             0.0, 0.0, 5.0, 270.0, 0.0,
             true,
             Settings.createNodeSequence(NPC.SKIN_DATA.class, "09469aaa-422e-4717-a73f-bd530dbd6c7e", "ewogICJ0aW1lc3RhbXAiIDogMTY1NDMzNjk2MDgzNiwKICAicHJvZmlsZUlkIiA6ICIyZDlhNWExYjIzZWQ0MWRkYjgzMWMzZjM3Zjk2NzA3ZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJBd2Vzb21lS2FsaW41NSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9jOGJjZTJmMWExY2QyNWZiYTU2MWU3NjI2ODYxYmYwMzA1OGY5MGI1OTNhY2MwODE2ZWZlNGZmZGY0ZGUwNmE0IgogICAgfQogIH0KfQ==", "PsdiXxQldurw+qrNHyXRkAhPpcLeY/c8hTW7lr8S1kGFE2P4OLuQZbnjzKxLCCcudhBBDgjU/3hJNXgC1Spnz4ywT1+RVCJ/F4SQFh39Y8mQQra1dz4jM0mvTfyCttTLY/sP+g91HCirYfmS6xXcmaFW9aGhFJasJ5xwXQ9Ez9mdVgajeBDh7DxPv4dKkyQsE13XD8Z4ipgRUsDflLIF2oDF8jLSgTpnlukJdlFmJIBPcO+g8S5K1V4UVxeZFRykuu1Hqv9g0BU56A2uKYGF7xKL9xUMsvRoRl0NbdJgWtuJRmt8ybMdD+KKhIQ2TNO/7hNKkZV8t5vWXPbLRS/8Q1KtINwVtJyha1SZ0jTxbrGrFmD2VxzNJMI2KcFBINS66+zVopgAV79xIiqQEa3x7PsCPUOGbNZO8oc5DmFstiBo/ypyZERZnwAvkrxag97Q7wPQrXkEmiYQWp4d5CWg8yfg0h3PJGUT58hcw9poaLSXS9lpA4Zp1nv+BWx8U32rczTqaEKCaW3p2b9mRmEYTcGl7+GsCsbLDuBDiU/JNVEUu8bhzVDKBNGaIHR2nVWoqZG0nReMx7b11j53T3ubAj3ATLuYIyRBqysNeztACo98ynMBVLn7gXaYDhfxqtWYxvLkrYpk/JvPOwoDX2gUUFGf3i+oQbJHW6YR5brqrCw="),
+            1000,
             Settings.createNodeSequence(ACTION.class, ACTION.Type.OPEN_MENU, "menu")
         )
     );
@@ -334,11 +340,15 @@ public class Settings extends YamlConfig {
         public int DISPLAYED_SKIN_PARTS = 255;
       }
 
+      @Comment("Cooldown in milliseconds.")
+      public int COOLDOWN = 1000;
+
       @Comment("Action to be performed when player clicks on NPC.")
       @Create
       public ACTION ACTION;
     }
 
+    @NewLine
     public List<HOLOGRAM> HOLOGRAMS = List.of(
         Settings.createNodeSequence(HOLOGRAM.class, 5.0, 1.0, 5.0, List.of("&fThis", "&7is a", "&8hologram."))
     );
@@ -351,6 +361,7 @@ public class Settings extends YamlConfig {
       public List<String> LINES = List.of();
     }
 
+    @NewLine
     public List<PORTAL> PORTALS = List.of(
         Settings.createNodeSequence(PORTAL.class, 10, 0, 10, 20, 1, 20, Settings.createNodeSequence(ACTION.class, ACTION.Type.CONNECT_TO_SERVER, "server1"))
     );

@@ -22,6 +22,9 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.scheduler.ScheduledTask;
 import java.time.Duration;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import net.elytrium.limboapi.api.Limbo;
 import net.elytrium.limboapi.api.LimboSessionHandler;
@@ -43,6 +46,7 @@ import net.kyori.adventure.title.Title;
 
 public class HubSessionHandler implements LimboSessionHandler {
 
+  private final Set<NPC> npcCooldowns = new HashSet<>();
   private final Player proxyPlayer;
   private final LimboHub plugin;
   private LimboPlayer player;
@@ -208,13 +212,31 @@ public class HubSessionHandler implements LimboSessionHandler {
     } else if (packet instanceof Interact) {
       Interact interact = (Interact) packet;
 
-      NPC npc = this.plugin.getNpcs().get(interact.getEntityId());
-      if (npc == null) {
-        npc = this.plugin.getNpcs().get(interact.getEntityId() - 1);
-      }
+      NPC npc = Optional.ofNullable(this.plugin.getNpcs().get(interact.getEntityId()))
+          .orElseGet(() -> this.plugin.getNpcs().get(interact.getEntityId() - 1));
 
       if (npc != null) {
-        this.handleAction(npc.getAction());
+        if (npc.getCooldown() == 0) {
+          this.handleAction(npc.getAction());
+        } else {
+          synchronized (this.npcCooldowns) {
+            if (this.npcCooldowns.contains(npc)) {
+              return;
+            }
+
+            this.handleAction(npc.getAction());
+            this.npcCooldowns.add(npc);
+          }
+
+          this.plugin.getServer().getScheduler()
+              .buildTask(this.plugin, () -> {
+                synchronized (this.npcCooldowns) {
+                  this.npcCooldowns.remove(npc);
+                }
+              })
+              .delay(npc.getCooldown(), TimeUnit.MILLISECONDS)
+              .schedule();
+        }
       }
     }
   }

@@ -51,9 +51,10 @@ public class NPC {
   private final float pitch;
   private final Settings.MAIN.NPC.SKIN_DATA skinData;
   private final Settings.MAIN.ACTION action;
+  private final int cooldown;
 
-  public NPC(int entityId, UUID uuid, String username, Component displayName, double positionX, double positionY,
-             double positionZ, float yaw, float pitch, Settings.MAIN.NPC.SKIN_DATA skinData, Settings.MAIN.ACTION action) {
+  public NPC(int entityId, UUID uuid, String username, Component displayName, double positionX, double positionY, double positionZ,
+             float yaw, float pitch, Settings.MAIN.NPC.SKIN_DATA skinData, Settings.MAIN.ACTION action, int cooldown) {
     this.entityId = entityId;
     this.uuid = uuid;
     this.username = username;
@@ -65,17 +66,18 @@ public class NPC {
     this.pitch = pitch;
     this.skinData = skinData;
     this.action = action;
+    this.cooldown = cooldown;
   }
 
-  public NPC(int entityId, Component displayName, double positionX, double positionY, double positionZ,
-             float yaw, float pitch, Settings.MAIN.NPC.SKIN_DATA skinData, Settings.MAIN.ACTION action) {
+  public NPC(int entityId, Component displayName, double positionX, double positionY, double positionZ, float yaw,
+             float pitch, Settings.MAIN.NPC.SKIN_DATA skinData, Settings.MAIN.ACTION action, int cooldown) {
     this(entityId, skinData != null ? UUID.fromString(skinData.UUID) : UUID.nameUUIDFromBytes(("NPC:" + entityId).getBytes(StandardCharsets.UTF_8)),
-        "_npc" + entityId, displayName, positionX, positionY, positionZ, yaw, pitch, skinData, action);
+        "_npc" + entityId, displayName, positionX, positionY, positionZ, yaw, pitch, skinData, action, cooldown);
   }
 
-  public NPC(Component displayUsername, double positionX, double positionY, double positionZ,
-             float yaw, float pitch, Settings.MAIN.NPC.SKIN_DATA skinData, Settings.MAIN.ACTION action) {
-    this(LimboHub.reserveEntityIds(2), displayUsername, positionX, positionY, positionZ, yaw, pitch, skinData, action);
+  public NPC(Component displayUsername, double positionX, double positionY, double positionZ, float yaw,
+             float pitch, Settings.MAIN.NPC.SKIN_DATA skinData, Settings.MAIN.ACTION action, int cooldown) {
+    this(LimboHub.reserveEntityIds(2), displayUsername, positionX, positionY, positionZ, yaw, pitch, skinData, action, cooldown);
   }
 
   public void spawn(LimboPlayer player) {
@@ -176,5 +178,9 @@ public class NPC {
 
   public Settings.MAIN.ACTION getAction() {
     return this.action;
+  }
+
+  public int getCooldown() {
+    return this.cooldown;
   }
 }
