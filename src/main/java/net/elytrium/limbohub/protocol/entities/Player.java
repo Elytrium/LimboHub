@@ -24,6 +24,14 @@ import net.elytrium.limbohub.protocol.metadata.EntityMetadataByteEntry;
 
 public class Player {
 
+  public static int getEntityType(ProtocolVersion version) {
+    if (version.compareTo(ProtocolVersion.MINECRAFT_1_20_2) >= 0) {
+      return 122;
+    } else {
+      throw new IllegalArgumentException("Player is not supported on versions below Minecraft 1.20.2");
+    }
+  }
+
   public static EntityMetadata buildSkinPartsMetadata(ProtocolVersion version, byte skinParts) {
     if (version.compareTo(ProtocolVersion.MINECRAFT_1_17) >= 0) {
       return new EntityMetadata(Map.of((byte) 17, new EntityMetadataByteEntry(skinParts)));

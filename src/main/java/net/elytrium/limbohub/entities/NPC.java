@@ -110,7 +110,13 @@ public class NPC {
       );
     }
 
-    player.writePacketAndFlush(new SpawnPlayer(this.entityId, this.uuid, this.positionX, this.positionY, this.positionZ, this.yaw, this.pitch));
+    if (player.getProxyPlayer().getProtocolVersion().compareTo(ProtocolVersion.MINECRAFT_1_20_2) >= 0) {
+      player.writePacketAndFlush(new SpawnEntity(this.entityId, this.uuid, Player::getEntityType,
+          this.positionX, this.positionY, this.positionZ, this.pitch, this.yaw, this.yaw, 0));
+    } else {
+      player.writePacketAndFlush(new SpawnPlayer(this.entityId, this.uuid, this.positionX, this.positionY, this.positionZ, this.yaw, this.pitch));
+    }
+
     player.writePacketAndFlush(new SetHeadRotation(this.entityId, this.yaw));
     player.writePacketAndFlush(new ScoreboardTeam("sb" + this.entityId, (byte) 0, "never",
             "always", 0, Component.empty(), Component.empty(), List.of(this.username)));

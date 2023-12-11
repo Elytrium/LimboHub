@@ -44,7 +44,12 @@ public class DisplayObjective implements MinecraftPacket {
 
   @Override
   public void encode(ByteBuf buf, ProtocolUtils.Direction direction, ProtocolVersion protocolVersion) {
-    buf.writeByte(this.position);
+    if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_20_2) >= 0) {
+      ProtocolUtils.writeVarInt(buf, this.position);
+    } else {
+      buf.writeByte(this.position);
+    }
+
     ProtocolUtils.writeString(buf, this.scoreName);
   }
 
