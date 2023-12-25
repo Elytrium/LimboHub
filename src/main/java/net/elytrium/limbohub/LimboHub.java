@@ -430,6 +430,7 @@ public class LimboHub {
             new PacketMapping(0x3E, ProtocolVersion.MINECRAFT_1_19_3, true),
             new PacketMapping(0x42, ProtocolVersion.MINECRAFT_1_19_4, true),
             new PacketMapping(0x44, ProtocolVersion.MINECRAFT_1_20_2, true),
+            new PacketMapping(0x46, ProtocolVersion.MINECRAFT_1_20_3, true),
         })
         .registerPacket(PacketDirection.CLIENTBOUND, DisplayObjective.class, DisplayObjective::new, new PacketMapping[]{
             new PacketMapping(0x3D, ProtocolVersion.MINECRAFT_1_8, true),
@@ -444,6 +445,7 @@ public class LimboHub {
             new PacketMapping(0x4D, ProtocolVersion.MINECRAFT_1_19_3, true),
             new PacketMapping(0x51, ProtocolVersion.MINECRAFT_1_19_4, true),
             new PacketMapping(0x53, ProtocolVersion.MINECRAFT_1_20_2, true),
+            new PacketMapping(0x55, ProtocolVersion.MINECRAFT_1_20_3, true),
         })
         .registerPacket(PacketDirection.CLIENTBOUND, SetEntityMetadata.class, SetEntityMetadata::new, new PacketMapping[]{
             new PacketMapping(0x1C, ProtocolVersion.MINECRAFT_1_8, true),
@@ -458,6 +460,7 @@ public class LimboHub {
             new PacketMapping(0x4E, ProtocolVersion.MINECRAFT_1_19_3, true),
             new PacketMapping(0x52, ProtocolVersion.MINECRAFT_1_19_4, true),
             new PacketMapping(0x54, ProtocolVersion.MINECRAFT_1_20_2, true),
+            new PacketMapping(0x56, ProtocolVersion.MINECRAFT_1_20_3, true),
         })
         .registerPacket(PacketDirection.CLIENTBOUND, UpdateObjectives.class, UpdateObjectives::new, new PacketMapping[]{
             new PacketMapping(0x3B, ProtocolVersion.MINECRAFT_1_8, true),
@@ -472,6 +475,7 @@ public class LimboHub {
             new PacketMapping(0x54, ProtocolVersion.MINECRAFT_1_19_3, true),
             new PacketMapping(0x58, ProtocolVersion.MINECRAFT_1_19_4, true),
             new PacketMapping(0x5A, ProtocolVersion.MINECRAFT_1_20_2, true),
+            new PacketMapping(0x5C, ProtocolVersion.MINECRAFT_1_20_3, true),
         })
         .registerPacket(PacketDirection.CLIENTBOUND, ScoreboardTeam.class, ScoreboardTeam::new, new PacketMapping[]{
             new PacketMapping(0x3E, ProtocolVersion.MINECRAFT_1_8, true),
@@ -486,6 +490,7 @@ public class LimboHub {
             new PacketMapping(0x56, ProtocolVersion.MINECRAFT_1_19_3, true),
             new PacketMapping(0x5A, ProtocolVersion.MINECRAFT_1_19_4, true),
             new PacketMapping(0x5C, ProtocolVersion.MINECRAFT_1_20_2, true),
+            new PacketMapping(0x5E, ProtocolVersion.MINECRAFT_1_20_3, true),
         })
         .registerPacket(PacketDirection.CLIENTBOUND, UpdateScore.class, UpdateScore::new, new PacketMapping[]{
             new PacketMapping(0x3C, ProtocolVersion.MINECRAFT_1_8, true),
@@ -500,6 +505,7 @@ public class LimboHub {
             new PacketMapping(0x57, ProtocolVersion.MINECRAFT_1_19_3, true),
             new PacketMapping(0x5B, ProtocolVersion.MINECRAFT_1_19_4, true),
             new PacketMapping(0x5D, ProtocolVersion.MINECRAFT_1_20_2, true),
+            new PacketMapping(0x5F, ProtocolVersion.MINECRAFT_1_20_3, true),
         })
         .registerPacket(PacketDirection.SERVERBOUND, Interact.class, Interact::new, new PacketMapping[]{
             new PacketMapping(0x02, ProtocolVersion.MINECRAFT_1_8, false),
@@ -514,6 +520,7 @@ public class LimboHub {
             new PacketMapping(0x0F, ProtocolVersion.MINECRAFT_1_19_3, false),
             new PacketMapping(0x10, ProtocolVersion.MINECRAFT_1_19_4, false),
             new PacketMapping(0x12, ProtocolVersion.MINECRAFT_1_20_2, true),
+            new PacketMapping(0x13, ProtocolVersion.MINECRAFT_1_20_3, true),
         })
         .registerPacket(PacketDirection.SERVERBOUND, ClickContainer.class, ClickContainer::new, new PacketMapping[]{
             new PacketMapping(0x0E, ProtocolVersion.MINECRAFT_1_8, false),

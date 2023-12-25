@@ -84,7 +84,7 @@ public class ItemStack {
       if (this.meta == null) {
         buf.writeByte(0);
       } else {
-        ProtocolUtils.writeCompoundTag(buf, this.meta.buildNbt(protocolVersion));
+        ProtocolUtils.writeBinaryTag(buf, protocolVersion, this.meta.buildNbt(protocolVersion));
       }
     }
   }
