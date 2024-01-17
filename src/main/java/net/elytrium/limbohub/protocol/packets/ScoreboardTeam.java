@@ -21,10 +21,10 @@ import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.proxy.connection.MinecraftSessionHandler;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
+import com.velocitypowered.proxy.protocol.packet.chat.ComponentHolder;
 import io.netty.buffer.ByteBuf;
 import java.util.List;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class ScoreboardTeam implements MinecraftPacket {
@@ -64,14 +64,13 @@ public class ScoreboardTeam implements MinecraftPacket {
     ProtocolUtils.writeString(buf, this.teamName);
     buf.writeByte(0);
     if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_13) >= 0) {
-      GsonComponentSerializer serializer = ProtocolUtils.getJsonChatSerializer(protocolVersion);
-      ProtocolUtils.writeString(buf, serializer.serialize(Component.empty()));
+      new ComponentHolder(protocolVersion, Component.empty()).write(buf);
       buf.writeByte(this.flags);
       ProtocolUtils.writeString(buf, this.nameTagVisibility);
       ProtocolUtils.writeString(buf, this.collisionRule);
       ProtocolUtils.writeVarInt(buf, this.teamColor);
-      ProtocolUtils.writeString(buf, serializer.serialize(this.teamPrefix));
-      ProtocolUtils.writeString(buf, serializer.serialize(this.teamSuffix));
+      new ComponentHolder(protocolVersion, this.teamPrefix).write(buf);
+      new ComponentHolder(protocolVersion, this.teamSuffix).write(buf);
     } else {
       LegacyComponentSerializer serializer = LegacyComponentSerializer.legacySection();
       buf.writeByte(0);
