@@ -21,6 +21,7 @@ import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.proxy.connection.MinecraftSessionHandler;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
+import com.velocitypowered.proxy.protocol.packet.chat.ComponentHolder;
 import io.netty.buffer.ByteBuf;
 import net.elytrium.limbohub.protocol.container.Container;
 
@@ -49,7 +50,7 @@ public class OpenScreen implements MinecraftPacket {
     } else {
       ProtocolUtils.writeString(buf, "minecraft:chest");
     }
-    ProtocolUtils.writeString(buf, ProtocolUtils.getJsonChatSerializer(protocolVersion).serialize(this.container.getTitle()));
+    new ComponentHolder(protocolVersion, this.container.getTitle()).write(buf);
     if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_13_2) <= 0) {
       buf.writeByte(this.container.getContents().length);
     }

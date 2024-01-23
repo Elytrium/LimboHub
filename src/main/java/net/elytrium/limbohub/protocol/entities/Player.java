@@ -25,7 +25,9 @@ import net.elytrium.limbohub.protocol.metadata.EntityMetadataByteEntry;
 public class Player {
 
   public static int getEntityType(ProtocolVersion version) {
-    if (version.compareTo(ProtocolVersion.MINECRAFT_1_20_2) >= 0) {
+    if (version.compareTo(ProtocolVersion.MINECRAFT_1_20_3) >= 0) {
+      return 124;
+    } else if (version.compareTo(ProtocolVersion.MINECRAFT_1_20_2) >= 0) {
       return 122;
     } else {
       throw new IllegalArgumentException("Player is not supported on versions below Minecraft 1.20.2");

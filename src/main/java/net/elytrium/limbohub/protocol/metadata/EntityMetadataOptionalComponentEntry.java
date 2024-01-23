@@ -18,7 +18,7 @@
 package net.elytrium.limbohub.protocol.metadata;
 
 import com.velocitypowered.api.network.ProtocolVersion;
-import com.velocitypowered.proxy.protocol.ProtocolUtils;
+import com.velocitypowered.proxy.protocol.packet.chat.ComponentHolder;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
 import net.kyori.adventure.text.Component;
@@ -35,7 +35,7 @@ public class EntityMetadataOptionalComponentEntry implements EntityMetadataEntry
   public void encode(ByteBuf buf, ProtocolVersion protocolVersion) {
     buf.writeBoolean(this.component != null);
     if (this.component != null) {
-      ProtocolUtils.writeString(buf, ProtocolUtils.getJsonChatSerializer(protocolVersion).serialize(this.component));
+      new ComponentHolder(protocolVersion, this.component).write(buf);
     }
   }
 

@@ -21,6 +21,7 @@ import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.scheduler.ScheduledTask;
+import com.velocitypowered.api.scheduler.TaskStatus;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Optional;
@@ -52,6 +53,7 @@ public class HubSessionHandler implements LimboSessionHandler {
   private LimboPlayer player;
   private Menu currentMenu;
   private ScheduledTask bossBarTask;
+  private ScheduledTask npcTabListTask;
   private BossBar currentBossBar;
 
   public HubSessionHandler(Player proxyPlayer, LimboHub plugin) {
@@ -97,7 +99,7 @@ public class HubSessionHandler implements LimboSessionHandler {
       this.currentMenu.getContainer().open(player);
     }
 
-    this.plugin.getServer().getScheduler()
+    this.npcTabListTask = this.plugin.getServer().getScheduler()
         .buildTask(this.plugin, () -> this.plugin.getNpcs().values().forEach(npc -> npc.cleanUp(player)))
         .delay(Settings.IMP.MAIN.SKIN_LOAD_SECONDS, TimeUnit.SECONDS)
         .schedule();
@@ -131,6 +133,13 @@ public class HubSessionHandler implements LimboSessionHandler {
 
     if (this.bossBarTask != null) {
       this.bossBarTask.cancel();
+    }
+
+    if (this.npcTabListTask != null) {
+      if (this.npcTabListTask.status() == TaskStatus.SCHEDULED) {
+        this.plugin.getNpcs().values().forEach(npc -> npc.cleanUp(this.player));
+      }
+      this.npcTabListTask.cancel();
     }
   }
 

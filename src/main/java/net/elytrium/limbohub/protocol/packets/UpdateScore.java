@@ -17,10 +17,12 @@
 
 package net.elytrium.limbohub.protocol.packets;
 
+import com.google.common.base.Preconditions;
 import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.proxy.connection.MinecraftSessionHandler;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
+import com.velocitypowered.proxy.protocol.packet.chat.ComponentHolder;
 import io.netty.buffer.ByteBuf;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -55,10 +57,21 @@ public class UpdateScore implements MinecraftPacket {
       serializedName = serializedName.substring(0, 40);
     }
     ProtocolUtils.writeString(buf, serializedName);
-    buf.writeByte(this.action);
-    ProtocolUtils.writeString(buf, this.objectiveName);
-    if (this.action != 1) {
+    if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_20_3) >= 0) {
+      Preconditions.checkState(this.action == 0, "unsupported action");
+      ProtocolUtils.writeString(buf, this.objectiveName);
       ProtocolUtils.writeVarInt(buf, this.value);
+
+      buf.writeBoolean(true);
+      new ComponentHolder(protocolVersion, this.entityName).write(buf);
+
+      buf.writeBoolean(false); // no custom format
+    } else {
+      buf.writeByte(this.action);
+      ProtocolUtils.writeString(buf, this.objectiveName);
+      if (this.action != 1) {
+        ProtocolUtils.writeVarInt(buf, this.value);
+      }
     }
   }
 
