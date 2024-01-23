@@ -19,9 +19,9 @@ package net.elytrium.limbohub.entities;
 
 import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.api.util.GameProfile;
-import com.velocitypowered.proxy.protocol.packet.LegacyPlayerListItem;
-import com.velocitypowered.proxy.protocol.packet.RemovePlayerInfo;
-import com.velocitypowered.proxy.protocol.packet.UpsertPlayerInfo;
+import com.velocitypowered.proxy.protocol.packet.LegacyPlayerListItemPacket;
+import com.velocitypowered.proxy.protocol.packet.RemovePlayerInfoPacket;
+import com.velocitypowered.proxy.protocol.packet.UpsertPlayerInfoPacket;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.List;
@@ -87,22 +87,22 @@ public class NPC {
     }
 
     if (player.getProxyPlayer().getProtocolVersion().compareTo(ProtocolVersion.MINECRAFT_1_19_3) >= 0) {
-      UpsertPlayerInfo.Entry entry = new UpsertPlayerInfo.Entry(this.uuid);
+      UpsertPlayerInfoPacket.Entry entry = new UpsertPlayerInfoPacket.Entry(this.uuid);
       entry.setProfile(profile);
       entry.setListed(false);
 
       player.writePacketAndFlush(
-          new UpsertPlayerInfo(
-              EnumSet.of(UpsertPlayerInfo.Action.ADD_PLAYER, UpsertPlayerInfo.Action.UPDATE_LISTED),
+          new UpsertPlayerInfoPacket(
+              EnumSet.of(UpsertPlayerInfoPacket.Action.ADD_PLAYER, UpsertPlayerInfoPacket.Action.UPDATE_LISTED),
               List.of(entry)
           )
       );
     } else {
       player.writePacketAndFlush(
-          new LegacyPlayerListItem(
-              LegacyPlayerListItem.ADD_PLAYER,
+          new LegacyPlayerListItemPacket(
+              LegacyPlayerListItemPacket.ADD_PLAYER,
               List.of(
-                  new LegacyPlayerListItem.Item(this.uuid)
+                  new LegacyPlayerListItemPacket.Item(this.uuid)
                       .setName(profile.getName())
                       .setProperties(profile.getProperties())
               )
@@ -135,12 +135,12 @@ public class NPC {
 
   public void cleanUp(LimboPlayer player) {
     if (player.getProxyPlayer().getProtocolVersion().compareTo(ProtocolVersion.MINECRAFT_1_19_3) >= 0) {
-      player.writePacketAndFlush(new RemovePlayerInfo(List.of(this.uuid)));
+      player.writePacketAndFlush(new RemovePlayerInfoPacket(List.of(this.uuid)));
     } else {
       player.writePacketAndFlush(
-          new LegacyPlayerListItem(
-              LegacyPlayerListItem.REMOVE_PLAYER,
-              List.of(new LegacyPlayerListItem.Item(this.uuid))
+          new LegacyPlayerListItemPacket(
+              LegacyPlayerListItemPacket.REMOVE_PLAYER,
+              List.of(new LegacyPlayerListItemPacket.Item(this.uuid))
           )
       );
     }
