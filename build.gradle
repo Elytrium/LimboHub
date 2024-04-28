@@ -49,6 +49,7 @@ dependencies {
     compileOnly("com.velocitypowered:velocity-proxy:$velocityVersion") // From Elytrium Repo.
 
     compileOnly("io.netty:netty-codec:$nettyVersion")
+    compileOnly("it.unimi.dsi:fastutil-core:$fastutilVersion")
 
     compileOnly("com.github.spotbugs:spotbugs-annotations:$spotbugsVersion")
 

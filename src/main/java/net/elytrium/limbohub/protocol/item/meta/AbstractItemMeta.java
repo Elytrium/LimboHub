@@ -21,6 +21,7 @@ import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.api.util.GameProfile;
 import com.velocitypowered.api.util.GameProfile.Property;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
+import it.unimi.dsi.fastutil.Pair;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -162,6 +163,7 @@ public abstract class AbstractItemMeta implements ItemMeta {
 
     if (this.hasColor) {
       componentMap.add(protocolVersion, "minecraft:base_color", this.color);
+      componentMap.add(protocolVersion, "minecraft:dyed_color", Pair.of(this.color, true));
     }
 
     componentMap.add(protocolVersion, "minecraft:hide_additional_tooltip", true);
