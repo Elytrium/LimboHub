@@ -18,9 +18,12 @@
 package net.elytrium.limbohub.protocol.item.meta;
 
 import com.velocitypowered.api.network.ProtocolVersion;
+import net.elytrium.limboapi.api.protocol.item.ItemComponentMap;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
 
 public interface ItemMeta {
 
   CompoundBinaryTag buildNbt(ProtocolVersion protocolVersion);
+
+  ItemComponentMap buildComponents(ProtocolVersion protocolVersion);
 }

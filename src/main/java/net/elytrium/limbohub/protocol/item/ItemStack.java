@@ -57,6 +57,41 @@ public class ItemStack {
   }
 
   public void encode(ByteBuf buf, ProtocolVersion protocolVersion) {
+    if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_20_5) >= 0) {
+      this.encodeModern(buf, protocolVersion);
+    } else {
+      this.encodeLegacy(buf, protocolVersion);
+    }
+  }
+
+  private void encodeModern(ByteBuf buf, ProtocolVersion protocolVersion) {
+    if (!this.present) {
+      ProtocolUtils.writeVarInt(buf, 0);
+      return;
+    }
+
+    VirtualItem item = this.items.stream()
+        .dropWhile(i -> !i.isSupportedOn(protocolVersion))
+        .findFirst().orElseThrow(() ->
+            new IllegalArgumentException("Item " + this.items.get(0).getModernID() + " is not supported on " + protocolVersion));
+
+    int id = item.getID(protocolVersion);
+    if (id == 0) {
+      ProtocolUtils.writeVarInt(buf, 0);
+    } else {
+      ProtocolUtils.writeVarInt(buf, this.count);
+      ProtocolUtils.writeVarInt(buf, id);
+
+      if (this.meta != null) {
+        this.meta.buildComponents(protocolVersion).write(protocolVersion, buf);
+      } else {
+        ProtocolUtils.writeVarInt(buf, 0);
+        ProtocolUtils.writeVarInt(buf, 0);
+      }
+    }
+  }
+
+  private void encodeLegacy(ByteBuf buf, ProtocolVersion protocolVersion) {
     if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_13_2) >= 0) {
       buf.writeBoolean(this.present);
     }

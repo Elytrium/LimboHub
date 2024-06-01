@@ -21,9 +21,9 @@ import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.proxy.connection.MinecraftSessionHandler;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
+import com.velocitypowered.proxy.protocol.packet.chat.ComponentHolder;
 import io.netty.buffer.ByteBuf;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.ComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class UpdateObjectives implements MinecraftPacket {
@@ -54,12 +54,14 @@ public class UpdateObjectives implements MinecraftPacket {
     ProtocolUtils.writeString(buf, this.objectiveName);
     buf.writeByte(this.mode);
     if (this.mode == 0 || this.mode == 2) {
-      ComponentSerializer<Component, ?, String> serializer = protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_13) >= 0
-          ? ProtocolUtils.getJsonChatSerializer(protocolVersion) : LegacyComponentSerializer.legacySection();
-      ProtocolUtils.writeString(buf, serializer.serialize(this.objectiveValue));
       if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_13) >= 0) {
+        new ComponentHolder(protocolVersion, this.objectiveValue).write(buf);
         ProtocolUtils.writeVarInt(buf, this.type);
+        if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_20_3) >= 0) {
+          buf.writeBoolean(false); // no custom format
+        }
       } else {
+        ProtocolUtils.writeString(buf, LegacyComponentSerializer.legacySection().serialize(this.objectiveValue));
         if (this.type == 0) {
           ProtocolUtils.writeString(buf, "integer");
         } else if (this.type == 1) {

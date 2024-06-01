@@ -18,9 +18,15 @@
 package net.elytrium.limbohub.protocol.item.meta;
 
 import com.velocitypowered.api.network.ProtocolVersion;
+import com.velocitypowered.api.util.GameProfile;
+import com.velocitypowered.api.util.GameProfile.Property;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
+import it.unimi.dsi.fastutil.Pair;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import net.elytrium.limboapi.api.protocol.item.ItemComponentMap;
+import net.elytrium.limbohub.LimboHub;
 import net.kyori.adventure.nbt.BinaryTagTypes;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.kyori.adventure.nbt.ListBinaryTag;
@@ -138,6 +144,40 @@ public abstract class AbstractItemMeta implements ItemMeta {
     }
 
     return builder.build();
+  }
+
+  @Override
+  public ItemComponentMap buildComponents(ProtocolVersion protocolVersion) {
+    ItemComponentMap componentMap = LimboHub.getInstance().getLimboFactory().createItemComponentMap();
+
+    Component name = this.getName();
+    List<Component> lore = this.getLore();
+
+    if (name != null) {
+      componentMap.add(protocolVersion, "minecraft:item_name", name);
+    }
+
+    if (lore != null && !lore.isEmpty()) {
+      componentMap.add(protocolVersion, "minecraft:lore", lore);
+    }
+
+    if (this.hasColor) {
+      componentMap.add(protocolVersion, "minecraft:base_color", this.color);
+      componentMap.add(protocolVersion, "minecraft:dyed_color", Pair.of(this.color, true));
+    }
+
+    componentMap.add(protocolVersion, "minecraft:hide_additional_tooltip", true);
+
+    if (this.enchanted) {
+      componentMap.add(protocolVersion, "minecraft:enchantment_glint_override", true);
+    }
+
+    if (this.skinValue != null) {
+      componentMap.add(protocolVersion, "minecraft:profile", new GameProfile(
+          new UUID(0, 0), this.skinName, List.of(new Property("textures", this.skinValue, ""))));
+    }
+
+    return componentMap;
   }
 
   public abstract Component getName();
