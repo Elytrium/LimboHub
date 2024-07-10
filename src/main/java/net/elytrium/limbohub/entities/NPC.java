@@ -21,14 +21,16 @@ import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.util.GameProfile;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.velocitypowered.proxy.protocol.packet.LegacyPlayerListItemPacket;
 import com.velocitypowered.proxy.protocol.packet.RemovePlayerInfoPacket;
 import com.velocitypowered.proxy.protocol.packet.UpsertPlayerInfoPacket;
+import java.nio.charset.StandardCharsets;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.elytrium.limboapi.api.player.LimboPlayer;
 import net.elytrium.limbohub.LimboHub;
 import net.elytrium.limbohub.Settings;
@@ -136,7 +138,9 @@ public class NPC {
     if (this.displayName != null) {
       player.writePacketAndFlush(new SpawnEntity(this.entityId + 1, UUID.randomUUID(), ArmorStand::getEntityType,
           this.positionX, this.positionY - 0.175, this.positionZ, this.pitch, this.yaw, this.yaw, 0));
-      player.writePacketAndFlush(new SetEntityMetadata(this.entityId + 1, version -> ArmorStand.buildHologramMetadata(version, processPlaceholders(this.displayName))));
+      player.writePacketAndFlush(
+              new SetEntityMetadata(this.entityId + 1, version -> ArmorStand.buildHologramMetadata(version, this.processPlaceholders(this.displayName)))
+      );
     }
   }
 
@@ -147,7 +151,7 @@ public class NPC {
     StringBuilder result = new StringBuilder();
     int lastEnd = 0;
 
-    for (int _i = 0; matcher.find(); _i++) {
+    for (; matcher.find(); ) {
       result.append(text, lastEnd, matcher.start());
 
       // Extract the text after the colon
@@ -161,7 +165,7 @@ public class NPC {
         int playerCount = server.getPlayersConnected().size();
 
         result.append(playerCount);
-      }else{
+      } else {
         result.append("LIMBOHUBHUB:SERVER_NOT_FOUND");
       }
 

@@ -321,7 +321,7 @@ public class LimboHub {
     Settings.IMP.MAIN.NPCS.forEach(data -> {
       NPC npc = new NPC(
           data.DISPLAY_NAME.isBlank() ? null : data.DISPLAY_NAME, data.X, data.Y,
-          data.Z, (float) data.YAW, (float) data.PITCH, data.LOAD_SKIN ? data.SKIN_DATA : null, data.ACTION, data.COOLDOWN, server
+          data.Z, (float) data.YAW, (float) data.PITCH, data.LOAD_SKIN ? data.SKIN_DATA : null, data.ACTION, data.COOLDOWN, this.server
       );
 
       this.npcs.put(npc.getEntityId(), npc);
