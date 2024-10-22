@@ -24,6 +24,7 @@ import com.velocitypowered.proxy.protocol.ProtocolUtils;
 import io.netty.buffer.ByteBuf;
 import net.elytrium.limbohub.protocol.container.Container;
 import net.elytrium.limbohub.protocol.item.ItemStack;
+import net.elytrium.limbohub.utils.ProtocolTools;
 
 public class SetContainerSlot implements MinecraftPacket {
 
@@ -52,7 +53,7 @@ public class SetContainerSlot implements MinecraftPacket {
 
   @Override
   public void encode(ByteBuf buf, ProtocolUtils.Direction direction, ProtocolVersion protocolVersion) {
-    buf.writeByte(this.window);
+    ProtocolTools.writeContainerId(buf, protocolVersion, this.window);
     if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_17_1) >= 0) {
       buf.writeByte(0);
     }

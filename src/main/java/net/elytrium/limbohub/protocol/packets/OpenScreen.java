@@ -24,6 +24,7 @@ import com.velocitypowered.proxy.protocol.ProtocolUtils;
 import com.velocitypowered.proxy.protocol.packet.chat.ComponentHolder;
 import io.netty.buffer.ByteBuf;
 import net.elytrium.limbohub.protocol.container.Container;
+import net.elytrium.limbohub.utils.ProtocolTools;
 
 public class OpenScreen implements MinecraftPacket {
 
@@ -44,7 +45,7 @@ public class OpenScreen implements MinecraftPacket {
 
   @Override
   public void encode(ByteBuf buf, ProtocolUtils.Direction direction, ProtocolVersion protocolVersion) {
-    buf.writeByte(this.container.getId());
+    ProtocolTools.writeContainerId(buf, protocolVersion, this.container.getId());
     if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_14) >= 0) {
       ProtocolUtils.writeVarInt(buf, this.container.getType().ordinal());
     } else {

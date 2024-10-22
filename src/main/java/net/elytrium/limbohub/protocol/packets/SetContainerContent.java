@@ -25,6 +25,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.Objects;
 import net.elytrium.limbohub.protocol.container.Container;
 import net.elytrium.limbohub.protocol.item.ItemStack;
+import net.elytrium.limbohub.utils.ProtocolTools;
 
 public class SetContainerContent implements MinecraftPacket {
 
@@ -45,7 +46,7 @@ public class SetContainerContent implements MinecraftPacket {
 
   @Override
   public void encode(ByteBuf buf, ProtocolUtils.Direction direction, ProtocolVersion protocolVersion) {
-    buf.writeByte(this.container != null ? this.container.getId() : 0);
+    ProtocolTools.writeContainerId(buf, protocolVersion, this.container != null ? this.container.getId() : 0);
     if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_17_1) >= 0) {
       buf.writeByte(0);
     }

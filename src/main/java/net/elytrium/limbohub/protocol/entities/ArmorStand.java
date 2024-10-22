@@ -29,7 +29,9 @@ import net.kyori.adventure.text.Component;
 public class ArmorStand {
 
   public static int getEntityType(ProtocolVersion version) {
-    if (version.compareTo(ProtocolVersion.MINECRAFT_1_20_5) >= 0) {
+    if (version.compareTo(ProtocolVersion.MINECRAFT_1_21_2) >= 0) {
+      return 5;
+    } else if (version.compareTo(ProtocolVersion.MINECRAFT_1_20_5) >= 0) {
       return 3;
     } else if (version.compareTo(ProtocolVersion.MINECRAFT_1_19) >= 0) {
       return 2;

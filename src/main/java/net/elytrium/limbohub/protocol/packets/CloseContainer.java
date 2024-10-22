@@ -23,6 +23,7 @@ import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
 import io.netty.buffer.ByteBuf;
 import net.elytrium.limbohub.protocol.container.Container;
+import net.elytrium.limbohub.utils.ProtocolTools;
 
 public class CloseContainer implements MinecraftPacket {
 
@@ -47,7 +48,7 @@ public class CloseContainer implements MinecraftPacket {
 
   @Override
   public void encode(ByteBuf buf, ProtocolUtils.Direction direction, ProtocolVersion protocolVersion) {
-    buf.writeByte(this.windowId);
+    ProtocolTools.writeContainerId(buf, protocolVersion, this.windowId);
   }
 
   @Override

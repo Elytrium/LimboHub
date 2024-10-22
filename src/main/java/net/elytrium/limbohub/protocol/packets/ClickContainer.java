@@ -22,6 +22,7 @@ import com.velocitypowered.proxy.connection.MinecraftSessionHandler;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
 import io.netty.buffer.ByteBuf;
+import net.elytrium.limbohub.utils.ProtocolTools;
 
 public class ClickContainer implements MinecraftPacket {
 
@@ -31,7 +32,7 @@ public class ClickContainer implements MinecraftPacket {
 
   @Override
   public void decode(ByteBuf buf, ProtocolUtils.Direction direction, ProtocolVersion protocolVersion) {
-    this.windowId = buf.readUnsignedByte();
+    this.windowId = ProtocolTools.readContainerId(buf, protocolVersion);
     if (protocolVersion.compareTo(ProtocolVersion.MINECRAFT_1_17_1) >= 0) {
       this.stateId = ProtocolUtils.readVarInt(buf);
     }
